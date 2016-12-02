@@ -3,7 +3,7 @@
 import pkg_resources
 
 from xblock.core import XBlock
-from xblock.fields import Scope, String , Integer , List
+from xblock.fields import Scope, String , Integer , List , Dict
 from xblock.fragment import Fragment
 from django.template import Template, Context , RequestContext
 from random import shuffle
@@ -17,16 +17,6 @@ class ListMatchXBlock(XBlock):
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
 
-    # TO-DO: delete count, and define your own fields.
-    count = Integer(
-        default=0, scope=Scope.user_state,
-        help="A simple counter, to show something happening",
-    )
-
-
-
-    match_status = [0, 0, 0, 0]
-
     left_list = List(help="Left list items for the option list",
                      scope = Scope.content,
                      default = ['one', 'two', 'three', 'four'])
@@ -34,6 +24,13 @@ class ListMatchXBlock(XBlock):
     right_list = List(help="Right list items for the option list",
                      scope=Scope.content,
                      default = [1, 2, 3, 4])
+
+    match_question = Dict(help="Matching Questions",
+                          scope=Scope.content,
+                          default={
+                              'left_list': [],
+                              'right_list': [],
+                          })
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -52,6 +49,11 @@ class ListMatchXBlock(XBlock):
 
         shuffle(self.right_list)
 
+        self.match_question['left_list'] = self.left_list
+        self.match_question['right_list'] = self.right_list
+
+        print self.match_question
+
         frag = Fragment(template.render(Context({
             'left_list': self.left_list,
             'right_list': self.right_list,
@@ -62,21 +64,8 @@ class ListMatchXBlock(XBlock):
         frag.initialize_js('ListMatchXBlock')
         return frag
 
-    # TO-DO: change this handler to perform your own actions.  You may need more
-    # than one handler, or you may not need any handlers at all.
     @XBlock.json_handler
-    def increment_count(self, data, suffix=''):
-        """
-        An example handler, which increments the data.
-        """
-        # Just to show data coming in...
-        assert data['hello'] == 'world'
-
-        self.count += 1
-        return {"count": self.count}
-
-    @XBlock.json_handler
-    def check_list(self, data, suffix=''):
+    def check_match(self, data, suffix=''):
         """
         An example handler, which increments the data.
         """

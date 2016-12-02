@@ -1,7 +1,7 @@
 /* Javascript for ListMatchXBlock. */
 function ListMatchXBlock(runtime, element) {
 
-    var handlerUrl = runtime.handlerUrl(element, 'check_list');
+    var handlerUrl = runtime.handlerUrl(element, 'check_match');
 
     $('#right_list', element).change(function(eventObject) {
         test_match();
@@ -27,22 +27,20 @@ function ListMatchXBlock(runtime, element) {
 
     function test_match() {
         var list_state = [];
-         var result = [0, 1, 2, 3];
+        var order_to_match = [0, 1, 2, 3];
 
-        // getting and testing positions of options in <select>
+        get_select_positions(list_state, order_to_match);
+
         // and testing their order
-
-        list_state.push( $("#right_list option[value='1']", element).index());
-        list_state.push( $("#right_list option[value='2']", element).index());
-        list_state.push( $("#right_list option[value='3']", element).index());
-        list_state.push( $("#right_list option[value='4']", element).index());
-
         var right_order = true;
-        for (var i = 0 ; i < result.length ; i++){
-            if(list_state[i] != result[i]){
+        for (var i = 0 ; i < order_to_match.length ; i++){
+
+            if(list_state[i] != order_to_match[i]){
+
                 $('#matched', element)
                 .css("color","red")
                 .text("No Matches");
+
                 right_order = false;
                 break;
             }
@@ -52,6 +50,13 @@ function ListMatchXBlock(runtime, element) {
             $('#matched', element)
             .css("color","green")
             .text("List Matches ");
+        }
+    }
+    function get_select_positions(list_state, order_to_match){
+        for (var i=0; i<order_to_match.length; i++){
+            var selector = "#right_list option[value=" + parseInt(i+1) + "]";
+            var index = $(selector, element).index();
+            list_state.push(index);
         }
     }
 }

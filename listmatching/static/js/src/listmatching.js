@@ -3,60 +3,64 @@ function ListMatchXBlock(runtime, element) {
 
     var handlerUrl = runtime.handlerUrl(element, 'check_match');
 
-    $('#right_list', element).change(function(eventObject) {
-        test_match();
-    });
+    function match_status(result){
+
+         if(result.answer == "matched"){
+            $('#matched', element)
+                .css("color","green")
+                .text("List Matches ");
+         }else{
+             $('#matched', element)
+                .css("color","red")
+                .text("No Matches");
+         }
+    }
 
     $('#up',element).on("click",function(evt){
+
         $('select#right_list option:selected').each(function(){
            $(this).insertBefore($(this).prev());
           });
-        test_match();
+        check_match()
     });
 
     $('#down',element).on("click",function(evt){
+
         $('select#right_list option:selected').each(function(){
            $(this).insertAfter($(this).next());
           });
-        test_match();
+        check_match()
     });
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
+        check_match()
+
     });
 
-    function test_match() {
-        var list_state = [];
-        var order_to_match = [0, 1, 2, 3];
+    function check_match(){
+        var options_order= [];
+        get_positions(options_order);
 
-        get_select_positions(list_state, order_to_match);
+        $.ajax({
+            type: "POST",
+            url: handlerUrl,
+            data: JSON.stringify({
+                options_order: options_order
+                }
+            ),
+            success: match_status
+        });
+    }
 
-        // and testing their order
-        var right_order = true;
-        for (var i = 0 ; i < order_to_match.length ; i++){
+    function get_positions(list_state){
 
-            if(list_state[i] != order_to_match[i]){
+        var selector = "#right_list option[value]";
+        var options = $(selector, element);
 
-                $('#matched', element)
-                .css("color","red")
-                .text("No Matches");
-
-                right_order = false;
-                break;
-            }
-        }
-        // if order matches
-        if(right_order){
-            $('#matched', element)
-            .css("color","green")
-            .text("List Matches ");
+        for (var i=0; i<options.length; i++){
+            list_state.push(options[i].value);
         }
     }
-    function get_select_positions(list_state, order_to_match){
-        for (var i=0; i<order_to_match.length; i++){
-            var selector = "#right_list option[value=" + parseInt(i+1) + "]";
-            var index = $(selector, element).index();
-            list_state.push(index);
-        }
-    }
+
 }

@@ -17,15 +17,21 @@ class ListMatchXBlock(XBlock):
     # Fields are defined on the class.  You can access them in your code as
     # self.<fieldname>.
 
-    left_list = List(help="Left list items for the option list",
+
+    left_list = List(help="items for <option> in left list",
                      scope = Scope.content,
                      default = ['one', 'two', 'three', 'four'])
 
-    right_list = List(help="Right list items for the option list",
+    right_list = List(help="items for <option> in right list",
                      scope=Scope.content,
                      default = [1, 2, 3, 4])
 
-    match_question = Dict(help="Matching Questions",
+    right_order = List(help="items in right order for right list",
+                       scope=Scope.content,
+                       default=[u'1', u'2', u'3', u'4'])
+
+
+    match_list_question = Dict(help="Matching Questions",
                           scope=Scope.content,
                           default={
                               'left_list': [],
@@ -49,14 +55,12 @@ class ListMatchXBlock(XBlock):
 
         shuffle(self.right_list)
 
-        self.match_question['left_list'] = self.left_list
-        self.match_question['right_list'] = self.right_list
+        self.match_list_question['left_list'] = self.left_list
+        self.match_list_question['right_list'] = self.right_list
 
-        print self.match_question
 
         frag = Fragment(template.render(Context({
-            'left_list': self.left_list,
-            'right_list': self.right_list,
+            'match_list_question': self.match_list_question
         })))
 
         frag.add_css(self.resource_string("static/css/listmatching.css"))
@@ -67,14 +71,18 @@ class ListMatchXBlock(XBlock):
     @XBlock.json_handler
     def check_match(self, data, suffix=''):
         """
-        An example handler, which increments the data.
+        An example handler, which test for matching of two list
         """
-        # Just to show data coming in...
-        assert data['hello'] == 'world'
-        print data['hello']
+        match = True
+        for q in zip(self.right_order, data['options_order']):
+            if q[0] != q[1]:
+                match = False
+                break
 
-        self.count += 1
-        return {"count": self.count}
+        if match is True:
+            return {'answer': 'matched'}
+        else:
+            return {'answer': 'not_matched'}
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.

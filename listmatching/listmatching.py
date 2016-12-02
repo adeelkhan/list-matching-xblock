@@ -6,6 +6,7 @@ from xblock.core import XBlock
 from xblock.fields import Scope, String , Integer , List
 from xblock.fragment import Fragment
 from django.template import Template, Context , RequestContext
+from random import shuffle
 
 
 class ListMatchXBlock(XBlock):
@@ -32,7 +33,7 @@ class ListMatchXBlock(XBlock):
 
     right_list = List(help="Right list items for the option list",
                      scope=Scope.content,
-                     default=[1, 2, 3, 4])
+                     default = [1, 2, 3, 4])
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -48,6 +49,8 @@ class ListMatchXBlock(XBlock):
 
         html = self.resource_string("static/html/listmatching.html")
         template = Template(html)
+
+        shuffle(self.right_list)
 
         frag = Fragment(template.render(Context({
             'left_list': self.left_list,

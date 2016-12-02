@@ -5,14 +5,14 @@
 
     <select id="left_list" size="4">
         {%for i in left_list%}
-        <option>{{i}}</option>
+            <option>{{i}}</option>
         {%endfor %}
     </select>
 </select>
     <label>List 2</label>
     <select id="right_list" size="4">
-        {%for i in left_list%}
-        <option>{{i}}</option>
+        {%for i in right_list%}
+            <option value={{i}}>{{i}}</option>
         {%endfor%}
     </select>
     <button id="up">Move up</button>

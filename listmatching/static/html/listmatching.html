@@ -4,14 +4,15 @@
     <label>List 1</label>
 
     <select id="left_list" size="4">
-        {%for i in match_list_question.left_list%}
+        {%for i in match_list_question.left_list %}
             <option>{{i}}</option>
         {%endfor %}
     </select>
 </select>
     <label>List 2</label>
     <select id="right_list" size="4">
-        {%for i in match_list_question.right_list%}
+        {%for i in match_list_question.right_list %}
+        {{i}}}
             <option value={{i}}>{{i}}</option>
         {%endfor%}
     </select>

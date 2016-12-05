@@ -19,24 +19,25 @@ class ListMatchXBlock(XBlock):
 
 
     left_list = List(help="items for <option> in left list",
-                     scope = Scope.content,
-                     default = ['one', 'two', 'three', 'four'])
+                     scope=Scope.content,
+                     )
 
     right_list = List(help="items for <option> in right list",
-                     scope=Scope.content,
-                     default = [1, 2, 3, 4])
+                      scope=Scope.content,
+                     )
 
     right_order = List(help="items in right order for right list",
                        scope=Scope.content,
-                       default=[u'1', u'2', u'3', u'4'])
+                       )
 
 
     match_list_question = Dict(help="Matching Questions",
-                          scope=Scope.content,
-                          default={
-                              'left_list': [],
-                              'right_list': [],
-                          })
+                                scope=Scope.content,
+                                default={
+                                    'left_list': [],
+                                    'right_list': [],
+                                }
+                            )
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -49,6 +50,16 @@ class ListMatchXBlock(XBlock):
         The primary view of the ListMatchXBlock, shown to students
         when viewing courses.
         """
+        self.left_list = ['a', 'b', 'c', 'd','e']
+        self.right_order = [
+            u'A',
+            u'B',
+            u'C',
+            u'D',
+            u'E',
+        ]
+        self.right_list = self.right_order[:]
+
 
         html = self.resource_string("static/html/listmatching.html")
         template = Template(html)
@@ -73,13 +84,7 @@ class ListMatchXBlock(XBlock):
         """
         An example handler, which test for matching of two list
         """
-        match = True
-        for q in zip(self.right_order, data['options_order']):
-            if q[0] != q[1]:
-                match = False
-                break
-
-        if match is True:
+        if self.right_order == data['options_order']:
             return {'answer': 'matched'}
         else:
             return {'answer': 'not_matched'}

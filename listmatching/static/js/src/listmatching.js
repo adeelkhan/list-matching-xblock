@@ -1,7 +1,45 @@
 /* Javascript for ListMatchXBlock. */
 function ListMatchXBlock(runtime, element) {
 
-    var handlerUrl = runtime.handlerUrl(element, 'check_match');
+    var check_match_url = runtime.handlerUrl(element, 'check_match');
+    var add_to_list1_url = runtime.handlerUrl(element, 'add_list1');
+    var add_to_list2_url = runtime.handlerUrl(element, 'add_list2');
+
+    $('#add_list1_btn',element).on("click",function(evt){
+
+        var text = $('#list1_text').val()
+
+         $.ajax({
+            type: "POST",
+            url: add_to_list1_url,
+            data: JSON.stringify({
+                option: text
+                }
+            ),
+            success: function(result){
+
+            }
+        });
+    });
+
+    $('#add_list2_btn',element).on("click",function(evt){
+
+        var text = $('#list2_text').val()
+
+         $.ajax({
+            type: "POST",
+            url: add_to_list2_url,
+            data: JSON.stringify({
+                option: text
+                }
+            ),
+            success: function(result){
+
+            }
+        });
+
+    });
+
 
     function match_status(result){
 
@@ -34,7 +72,7 @@ function ListMatchXBlock(runtime, element) {
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
-        check_match()
+        //check_match()
 
     });
 
@@ -44,7 +82,7 @@ function ListMatchXBlock(runtime, element) {
 
         $.ajax({
             type: "POST",
-            url: handlerUrl,
+            url: check_match_url,
             data: JSON.stringify({
                 options_order: options_order
                 }

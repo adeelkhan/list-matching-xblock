@@ -1,16 +1,31 @@
 <h1>List Matching</h1>
 
+<label>Insert into List 1:</label>
+<input type="text" id="list1_text"/>
+<button id="add_list1_btn">Add to list</button>
+<br/>
+<label>Insert into List 2:</label>
+<input type="text" id="list2_text"/>
+<button id="add_list2_btn">Add to list</button>
+
+<br/>
+<br/>
+
+
 <div class="listmatching_block">
+
     <label>List 1</label>
 
-    <select id="left_list" size="4">
+    <select id="left_list" size="15" class="resizedTextbox">
         {%for i in match_list_question.left_list %}
             <option>{{i}}</option>
         {%endfor %}
     </select>
-</select>
+
+
+
     <label>List 2</label>
-    <select id="right_list" size="4">
+    <select id="right_list" size="15" class="resizedTextbox">
         {%for i in match_list_question.right_list %}
         {{i}}}
             <option value={{i}}>{{i}}</option>
@@ -18,6 +33,7 @@
     </select>
     <button id="up">Move up</button>
     <button id="down">Move down</button>
+
 </div>
 <p/>
 <div id="matched"></div>

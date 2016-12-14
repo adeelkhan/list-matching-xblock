@@ -1,9 +1,3 @@
 /* CSS for ListMatchXBlock */
 
-.listmatching_block .count {
-    font-weight: bold;
-}
-
-.listmatching_block p {
-    cursor: pointer;
-}
+.resizedTextbox {width: 100px;}

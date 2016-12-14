@@ -50,16 +50,6 @@ class ListMatchXBlock(XBlock):
         The primary view of the ListMatchXBlock, shown to students
         when viewing courses.
         """
-        self.left_list = ['a', 'b', 'c', 'd','e']
-        self.right_order = [
-            u'A',
-            u'B',
-            u'C',
-            u'D',
-            u'E',
-        ]
-        self.right_list = self.right_order[:]
-
 
         html = self.resource_string("static/html/listmatching.html")
         template = Template(html)
@@ -84,10 +74,30 @@ class ListMatchXBlock(XBlock):
         """
         An example handler, which test for matching of two list
         """
-        if self.right_order == data['options_order']:
+
+        if len(self.right_order) == len(data['options_order']) and \
+                        self.right_order == data['options_order']:
             return {'answer': 'matched'}
         else:
             return {'answer': 'not_matched'}
+
+    @XBlock.json_handler
+    def add_list1(self, data, suffix=''):
+        """
+        An example handler, which test for matching of two list
+        """
+
+        self.left_list.append(data['option'])
+
+    @XBlock.json_handler
+    def add_list2(self, data, suffix=''):
+        """
+        An example handler, which test for matching of two list
+        """
+
+        self.right_list.append(data['option'])
+        self.right_order.append(data['option'])
+
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.

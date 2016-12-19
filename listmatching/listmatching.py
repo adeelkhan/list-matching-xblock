@@ -48,7 +48,7 @@ class ListMatchXBlock(XBlock):
     def student_view(self, context=None):
         """
         The primary view of the ListMatchXBlock, shown to students
-        when viewing courses.
+        when viewing a course.
         """
 
         html = self.resource_string("static/html/listmatching.html")
@@ -84,7 +84,7 @@ class ListMatchXBlock(XBlock):
     @XBlock.json_handler
     def add_list1(self, data, suffix=''):
         """
-        An example handler, which test for matching of two list
+        Handler for adding items to left hand list
         """
 
         self.left_list.append(data['option'])
@@ -92,7 +92,7 @@ class ListMatchXBlock(XBlock):
     @XBlock.json_handler
     def add_list2(self, data, suffix=''):
         """
-        An example handler, which test for matching of two list
+        Handler for adding items to right side list
         """
 
         self.right_list.append(data['option'])
